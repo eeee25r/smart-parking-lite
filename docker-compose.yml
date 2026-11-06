@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  # Server 1: Nginx Web Dashboard
+  web:
+    build: ./frontend
+    ports:
+      - "8080:80"             # Open http://localhost:8080 in your browser
+    networks:
+      - parking-net
+
+  # Server 2: Apache Storage Server
+  storage:
+    image: httpd:alpine
+    ports:
+      - "8081:80"             # Open http://localhost:8081 in your browser
+    volumes:
+      # Direct link to local folder containing images
+      - ./storage/images:/usr/local/apache2/htdocs/
+    networks:
+      - parking-net
+
+networks:
+  parking-net:
+    driver: bridge
